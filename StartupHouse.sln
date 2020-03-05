@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StartupHouse.API", "Startup
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{1DACE37B-B14E-4FFB-9776-05CC1CF01CA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "startupHouse.API.Interfaces", "startupHouse.API.Interfaces\startupHouse.API.Interfaces.csproj", "{0E2D51F1-BED2-4EEE-AC25-A395C71038A7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StartupHouse.API.Interfaces", "startupHouse.API.Interfaces\StartupHouse.API.Interfaces.csproj", "{0E2D51F1-BED2-4EEE-AC25-A395C71038A7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StartupHouse.API.Services", "StartupHouse.API.Services\StartupHouse.API.Services.csproj", "{F4D63D1D-6831-4497-88B4-6182E5DFA513}"
 EndProject

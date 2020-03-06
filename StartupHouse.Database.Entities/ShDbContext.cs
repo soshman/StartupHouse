@@ -33,12 +33,14 @@ namespace StartupHouse.Database.Entities
                     new Currency()
                     {
                         Id = 1,
-                        Code = "EUR"
+                        Code = "EUR",
+                        Name = "Euro"
                     },
                     new Currency()
                     {
                         Id = 2,
-                        Code = "USD"
+                        Code = "USD",
+                        Name = "Dolar amerykański"
                     });
             }
     }

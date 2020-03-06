@@ -14,6 +14,8 @@ namespace StartupHouse.Database.Interfaces
 
         IEnumerable<T> Fetch(Expression<Func<T, bool>> predicate);
 
+        IEnumerable<T> Fetch();
+
         IQueryable<T> Query();
 
         void Add(T entity);

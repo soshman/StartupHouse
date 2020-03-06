@@ -25,6 +25,6 @@ namespace StartupHouse.Database.Entities.dbo
         /// <summary>
         ///     Currency navigation property.
         /// </summary>
-        public Currency Currency { get; set; }
+        public virtual Currency Currency { get; set; }
     }
 }

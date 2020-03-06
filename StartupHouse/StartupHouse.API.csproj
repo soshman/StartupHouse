@@ -4,5 +4,18 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Proxies" Version="3.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\startupHouse.API.Interfaces\StartupHouse.API.Interfaces.csproj" />
+    <ProjectReference Include="..\StartupHouse.API.Services\StartupHouse.API.Services.csproj" />
+    <ProjectReference Include="..\StartupHouse.Database.Interfaces\StartupHouse.Database.Interfaces.csproj" />
+    <ProjectReference Include="..\StartupHouse.Database.Repository\StartupHouse.Database.Repository.csproj" />
+  </ItemGroup>
+
 
 </Project>

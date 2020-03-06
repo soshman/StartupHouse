@@ -38,6 +38,11 @@ namespace StartupHouse.Database.Repository
             return Queryable.Where(predicate).ToList();
         }
 
+        public IEnumerable<T> Fetch()
+        {
+            return Queryable.ToList();
+        }
+
         public IQueryable<T> Query()
         {
             return Queryable;

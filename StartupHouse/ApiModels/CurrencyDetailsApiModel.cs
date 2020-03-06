@@ -7,5 +7,6 @@ namespace StartupHouse.API.ApiModels
 {
     public class CurrencyDetailsApiModel
     {
+
     }
 }

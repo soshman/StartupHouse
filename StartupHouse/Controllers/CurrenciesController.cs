@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using StartupHouse.API.ApiModels;
+using StartupHouse.API.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,15 +13,28 @@ namespace StartupHouse.API.Controllers
     [ApiController]
     public class CurrenciesController : ControllerBase
     {
-        [HttpGet]
-        public IEnumerable<CurrencyApiModel> GetCurrencies ()
+        private readonly IMapper _mapper;
+
+        private readonly ICurrencyService _currencyService;
+
+        public CurrenciesController(IMapper mapper,
+            ICurrencyService currencyService)
         {
-            return null;
+            _mapper = mapper;
+            _currencyService = currencyService;
+        }
+
+        [HttpGet]
+        public IEnumerable<CurrencyApiModel> GetCurrencies()
+        {
+            var currenciesDto = _currencyService.GetAvailableCurrencies();
+
+            return _mapper.Map<IEnumerable<CurrencyApiModel>>(currenciesDto);
         }
 
         [Route("{code}")]
         [HttpGet]
-        public CurrencyDetailsApiModel GetCurrencyData (string code, DateTime? fromDate, DateTime? toDate)
+        public CurrencyDetailsApiModel GetCurrencyData(string code, DateTime? fromDate, DateTime? toDate)
         {
             return null;
         }

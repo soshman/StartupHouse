@@ -4,4 +4,14 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\startupHouse.API.Interfaces\StartupHouse.API.Interfaces.csproj" />
+    <ProjectReference Include="..\StartupHouse.Database.Entities\StartupHouse.Database.Entities.csproj" />
+    <ProjectReference Include="..\StartupHouse.Database.Interfaces\StartupHouse.Database.Interfaces.csproj" />
+  </ItemGroup>
+
 </Project>

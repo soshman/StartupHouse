@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using StartupHouse.API.Interfaces.Exceptions;
 using System;
 using System.Net;
 using System.Threading.Tasks;
@@ -24,6 +25,16 @@ namespace StartupHouse.API.Middleware
             {
                 await HandleInvalidOperationException(httpContext, ex);
             }
+            catch (NotFoundException ex)
+            {
+                await HandleNotFoundException(httpContext, ex);
+
+            }
+            catch (NbpApiException ex)
+            {
+                await HandleNbpApiException(httpContext, ex);
+
+            }
             catch
             {
                 HandleException(httpContext);
@@ -34,6 +45,18 @@ namespace StartupHouse.API.Middleware
         private async Task HandleInvalidOperationException(HttpContext context, InvalidOperationException ex)
         {
             context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            await context.Response.WriteAsync(ex.Message);
+        }
+
+        private async Task HandleNotFoundException(HttpContext context, NotFoundException ex)
+        {
+            context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+            await context.Response.WriteAsync(ex.Message);
+        }
+
+        private async Task HandleNbpApiException(HttpContext context, NbpApiException ex)
+        {
+            context.Response.StatusCode = (int)HttpStatusCode.ServiceUnavailable;
             await context.Response.WriteAsync(ex.Message);
         }
 

@@ -36,18 +36,18 @@ namespace StartupHouse.API.Services
                     var responseObject = JsonConvert.DeserializeObject<NbpResponse>(responseContent);
                     return responseObject;
                 }
-                else if (response.StatusCode != HttpStatusCode.NotFound) //TODO: How to handle 404?
-                {
-                    throw new InvalidOperationException($"NBP Api returned http status: {response.StatusCode}.");
-                }
-                else
+                else if (response.StatusCode == HttpStatusCode.NotFound)
                 {
                     return null;
                 }
+                else
+                {
+                    throw new NbpApiException($"NBP Api returned http status: {response.StatusCode}.");
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                throw;
+                throw new NbpApiException($"Something went wrong calling NBP API.", ex);
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using StartupHouse.API.Interfaces;
 using StartupHouse.API.Interfaces.DTO;
+using StartupHouse.API.Interfaces.Exceptions;
 using StartupHouse.Database.Entities.dbo;
 using StartupHouse.Database.Interfaces;
 using System;
@@ -49,8 +50,6 @@ namespace StartupHouse.API.Services
             if (dateTo > DateTime.Today)
                 dateTo = DateTime.Today;
 
-            //TODO: Check if range not too wide and if date from not > date to.
-
             if ((dateTo - dateFrom) > TimeSpan.FromDays(15))
                 throw new InvalidOperationException("Too wide dates range");
 
@@ -58,7 +57,9 @@ namespace StartupHouse.API.Services
                 throw new InvalidOperationException("DateTo must be later than DateFrom");
 
             var currency = _currenciesRepository.Get(c => c.Code == code);
-            //TODO: If not found.
+
+            if (currency == null)
+                throw new NotFoundException("Currency not found");
 
             var currencyPricesDates = _currencyPricesRepository.Query().Where(cp => cp.CurrencyId == currency.Id && cp.Day >= dateFrom && cp.Day <= dateTo).Select(cp => cp.Day).ToList();
 

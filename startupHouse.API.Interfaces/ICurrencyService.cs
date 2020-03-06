@@ -1,6 +1,8 @@
 ﻿using StartupHouse.API.Interfaces.DTO;
 using StartupHouse.API.Interfaces.Models;
+using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace StartupHouse.API.Interfaces
 {
@@ -10,6 +12,8 @@ namespace StartupHouse.API.Interfaces
 
         CurrencyDetailsDTO GetCurrencyDetails(string code);
 
-        void UpdateCurrencies(IEnumerable<NbpResponse> nbpResponse);
+        Task UpdateCurrencies(DateTime date);
+
+        Task UpdateCurrencies(DateTime dateFrom, DateTime dateTo);
     }
 }

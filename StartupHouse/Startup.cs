@@ -61,7 +61,7 @@ namespace StartupHouse
             });
 
             services.AddHangfire(x => x.
-                UseSqlServerStorage(connectionString);
+                UseSqlServerStorage(connectionString));
             services.AddHangfireServer();
         }
 
@@ -85,7 +85,7 @@ namespace StartupHouse
             app.UseHangfireDashboard();
             app.UseHangfireServer();
 
-            RecurringJob.AddOrUpdate<INbpService>(w => w.UpdateCurrencies(DateTime.Today, DateTime.Today), Cron.Daily(1, 0), TimeZoneInfo.Local); //TODO: Add UpdateCurrencies with one parameter.
+            RecurringJob.AddOrUpdate<ICurrencyService>(w => w.UpdateCurrencies(DateTime.Today), Cron.Daily(12, 0), TimeZoneInfo.Local);
         }
     }
 }

@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace StartupHouse.API.Services
 {
@@ -17,16 +18,19 @@ namespace StartupHouse.API.Services
         private readonly IContextScope _contextScope;
         private readonly IRepository<Currency> _currenciesRepository;
         private readonly IRepository<CurrencyPrice> _currencyPricesRepository;
+        private readonly INbpService _nbpService;
 
         public CurrencyService(IMapper mapper,
             IContextScope contextScope,
             IRepository<Currency> currenciesRepository,
-            IRepository<CurrencyPrice> currencyPricesRepository)
+            IRepository<CurrencyPrice> currencyPricesRepository,
+            INbpService nbpService)
         {
             _mapper = mapper;
             _contextScope = contextScope;
             _currenciesRepository = currenciesRepository;
             _currencyPricesRepository = currencyPricesRepository;
+            _nbpService = nbpService;
         }
 
         public IEnumerable<CurrencyDTO> GetAvailableCurrencies()
@@ -47,8 +51,15 @@ namespace StartupHouse.API.Services
             return currencyDetailsDTO;
         }
 
-        public void UpdateCurrencies(IEnumerable<NbpResponse> nbpResponse)
+        public async Task UpdateCurrencies(DateTime date)
         {
+            await UpdateCurrencies(date, date);
+        }
+
+        public async Task UpdateCurrencies(DateTime dateFrom, DateTime dateTo)
+        {
+            var nbpResponse = await _nbpService.GetCurrencies(dateFrom, dateTo);
+
             foreach (var day in nbpResponse)
             {
                 foreach (var currencyRate in day.Rates)
@@ -71,6 +82,8 @@ namespace StartupHouse.API.Services
                         Price = currencyRate.Mid,
                         Currency = currency
                     };
+
+                    _currencyPricesRepository.Add(currencyPrice);
                 }
             }
 

@@ -15,16 +15,13 @@ namespace StartupHouse.API.Services
     public class NbpService : INbpService
     {
         private readonly HttpClient _client;
-        private readonly ICurrencyService _currencyService;
 
-        public NbpService(HttpClient client,
-            ICurrencyService currencyService)
+        public NbpService(HttpClient client)
         {
             _client = client;
-            _currencyService = currencyService;
         }
 
-        public async Task UpdateCurrencies(DateTime dateFrom, DateTime dateTo)
+        public async Task<IEnumerable<NbpResponse>> GetCurrencies(DateTime dateFrom, DateTime dateTo)
         {
             try
             {
@@ -37,12 +34,13 @@ namespace StartupHouse.API.Services
                 {
                     var responseContent = await response.Content.ReadAsStringAsync();
                     var responseObject = JsonConvert.DeserializeObject<IEnumerable<NbpResponse>>(responseContent);
-                    _currencyService.UpdateCurrencies(responseObject);
+                    return responseObject;
                 }
                 else if (response.StatusCode != HttpStatusCode.NotFound) //TODO: How to handle 404?
                 {
                     throw new InvalidOperationException($"NBP Api returned http status: {response.StatusCode}.");
                 }
+                throw new InvalidOperationException($"NBP Api returned http status: {response.StatusCode}.");
             }
             catch
             {

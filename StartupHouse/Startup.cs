@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using StartupHouse.API.ApiModels;
+using StartupHouse.API.Filters;
 using StartupHouse.API.Interfaces;
 using StartupHouse.API.Interfaces.DTO;
 using StartupHouse.API.Middleware;
@@ -112,7 +113,10 @@ namespace StartupHouse
                 endpoints.MapControllers();
             });
 
-            app.UseHangfireDashboard();
+            app.UseHangfireDashboard("/hangfire", new DashboardOptions
+            {
+                Authorization = new[] { new HangfireAuthorizationFilter() },
+            });
             app.UseHangfireServer();
 
             RecurringJob.AddOrUpdate<ICurrencyService>(w => w.UpdateCurrencies(), Cron.Daily(12, 0), TimeZoneInfo.Local);

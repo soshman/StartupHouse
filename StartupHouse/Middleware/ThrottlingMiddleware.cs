@@ -19,18 +19,21 @@ namespace StartupHouse.API.Middleware
 
         public async Task InvokeAsync(HttpContext httpContext)
         {
-            string ip = httpContext.Connection.RemoteIpAddress.ToString();
-
-            if (_cache.TryGetValue(ip, out _))
+            if (httpContext.Request.Path.ToString().ToLower().Contains("api"))
             {
-                httpContext.Response.StatusCode = (int)HttpStatusCode.TooManyRequests;
-                return;
+                string ip = httpContext.Connection.RemoteIpAddress.ToString();
+
+                if (_cache.TryGetValue(ip, out _))
+                {
+                    httpContext.Response.StatusCode = (int)HttpStatusCode.TooManyRequests;
+                    return;
+                }
+
+                MemoryCacheEntryOptions options = new MemoryCacheEntryOptions();
+                options.AbsoluteExpiration = DateTime.Now.AddSeconds(1);
+
+                _cache.Set(ip, DateTime.Now.ToString(), options);
             }
-            
-            MemoryCacheEntryOptions options = new MemoryCacheEntryOptions();
-            options.AbsoluteExpiration = DateTime.Now.AddSeconds(1);
-            
-            _cache.Set(ip, DateTime.Now.ToString(), options);
 
             await _next(httpContext);
         }

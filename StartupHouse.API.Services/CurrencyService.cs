@@ -56,13 +56,13 @@ namespace StartupHouse.API.Services
 
             var currencyPricesDates = _currencyPricesRepository.Query().Where(cp => cp.CurrencyId == currency.Id && cp.Day >= dateFrom && cp.Day <= dateTo).Select(cp => cp.Day).ToList();
 
-            for (int i = 0; i < dateTo.Value.Subtract(dateFrom.Value).Days; i++)
+            for (int i = 0; i <= dateTo.Value.Subtract(dateFrom.Value).Days; i++)
             {
                 var day = dateFrom.Value.AddDays(i);
                 var currencyDayPrice = currencyPricesDates.FirstOrDefault(cpd => cpd == day);
 
                 if (currencyDayPrice == default)
-                    await UpdateCurrencies(day); //Could update only one currency.
+                    await UpdateCurrency(code, day); //Could return value.
             }
 
             var currencyPrices = _currencyPricesRepository.Fetch(cp => cp.CurrencyId == currency.Id && cp.Day >= dateFrom && cp.Day <= dateTo);
@@ -78,46 +78,38 @@ namespace StartupHouse.API.Services
             return currencyDetailsDTO;
         }
 
-        public async Task UpdateCurrencies(DateTime date)
+        public async Task UpdateCurrencies()
         {
-            await UpdateCurrencies(date, date);
+            var currencies = _currenciesRepository.Fetch();
+
+            foreach (var currency in currencies)
+            {
+                await UpdateCurrency(currency.Code, DateTime.Today);
+            }
         }
 
-        public async Task UpdateCurrencies(DateTime dateFrom, DateTime dateTo)
+        public async Task UpdateCurrency(string code, DateTime date)
         {
-            var nbpResponse = await _nbpService.GetCurrencies(dateFrom, dateTo);
+            var nbpResponse = await _nbpService.GetCurrency(code, date);
 
             if (nbpResponse == null)
                 return;
 
-            foreach (var day in nbpResponse)
+            foreach (var currencyRate in nbpResponse.Rates)
             {
-                foreach (var currencyRate in day.Rates)
+                var currencyId = _currenciesRepository.Query().Where(c => c.Code == code).Select(c => c.Id).Single();
+
+                if (_currencyPricesRepository.Query().Any(cp => cp.CurrencyId == currencyId && cp.Day == currencyRate.EffectiveDate))
+                    continue;
+
+                var currencyPrice = new CurrencyPrice
                 {
-                    var currency = _currenciesRepository.Get(c => c.Code == currencyRate.Code); //TODO: Maybe get a whole list at once? 
+                    Day = currencyRate.EffectiveDate,
+                    Price = currencyRate.Mid,
+                    CurrencyId = currencyId
+                };
 
-                    if (currency == null)
-                    {
-                        currency = new Currency
-                        {
-                            Code = currencyRate.Code,
-                            Name = currencyRate.Currency
-                        };
-                        _currenciesRepository.Add(currency);
-                    }
-
-                    if (_currencyPricesRepository.Query().Any(cp => cp.CurrencyId == currency.Id && cp.Day == day.EffectiveDate))
-                        continue;
-
-                    var currencyPrice = new CurrencyPrice
-                    {
-                        Day = day.EffectiveDate,
-                        Price = currencyRate.Mid,
-                        Currency = currency
-                    };
-
-                    _currencyPricesRepository.Add(currencyPrice);
-                }
+                _currencyPricesRepository.Add(currencyPrice);
             }
 
             _contextScope.Commit();

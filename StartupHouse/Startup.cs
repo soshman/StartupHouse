@@ -85,7 +85,7 @@ namespace StartupHouse
             app.UseHangfireDashboard();
             app.UseHangfireServer();
 
-            RecurringJob.AddOrUpdate<ICurrencyService>(w => w.UpdateCurrencies(DateTime.Today), Cron.Daily(12, 0), TimeZoneInfo.Local);
+            RecurringJob.AddOrUpdate<ICurrencyService>(w => w.UpdateCurrencies(), Cron.Daily(12, 0), TimeZoneInfo.Local);
         }
     }
 }

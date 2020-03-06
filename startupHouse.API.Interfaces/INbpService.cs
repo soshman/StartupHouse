@@ -7,6 +7,6 @@ namespace StartupHouse.API.Interfaces
 {
     public interface INbpService
     {
-        Task<IEnumerable<NbpResponse>> GetCurrencies(DateTime dateFrom, DateTime dateTo);
+        Task<NbpResponse> GetCurrency(string code, DateTime date);
     }
 }

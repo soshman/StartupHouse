@@ -4,7 +4,10 @@ namespace StartupHouse.API.Interfaces.Models
 {
     public class NbpResponse
     {
-        public DateTime EffectiveDate { get; set; }
+        public string Currency { get; set; }
+
+        public string Code { get; set; }
+
         public NbpCurrencyRate[] Rates { get; set; }
     }
 }

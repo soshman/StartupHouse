@@ -12,8 +12,8 @@ namespace StartupHouse.API.Interfaces
 
         Task<CurrencyDetailsDTO> GetCurrencyDetails(string code, DateTime? dateFrom, DateTime? dateTo);
 
-        Task UpdateCurrencies(DateTime date);
+        Task UpdateCurrency(string code, DateTime date);
 
-        Task UpdateCurrencies(DateTime dateFrom, DateTime dateTo);
+        Task UpdateCurrencies();
     }
 }

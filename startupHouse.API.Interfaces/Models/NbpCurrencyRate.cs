@@ -1,10 +1,10 @@
-﻿namespace StartupHouse.API.Interfaces.Models
+﻿using System;
+
+namespace StartupHouse.API.Interfaces.Models
 {
     public class NbpCurrencyRate
     {
-        public string Currency { get; set; }
-
-        public string Code { get; set; }
+        public DateTime EffectiveDate { get; set; }
 
         public decimal Mid { get; set; }
     }

@@ -21,19 +21,19 @@ namespace StartupHouse.API.Services
             _client = client;
         }
 
-        public async Task<IEnumerable<NbpResponse>> GetCurrencies(DateTime dateFrom, DateTime dateTo)
+        public async Task<NbpResponse> GetCurrency(string code, DateTime date)
         {
             try
             {
                 _client.DefaultRequestHeaders.Accept.Clear();
                 _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-                var response = await _client.GetAsync($"http://api.nbp.pl/api/exchangerates/tables/a/{dateFrom.ToString("yyyy-MM-dd")}/{dateTo.ToString("yyyy-MM-dd")}");
+                var response = await _client.GetAsync($"http://api.nbp.pl/api/exchangerates/rates/a/{code}/{date.ToString("yyyy-MM-dd")}");
 
                 if (response.IsSuccessStatusCode)
                 {
                     var responseContent = await response.Content.ReadAsStringAsync();
-                    var responseObject = JsonConvert.DeserializeObject<IEnumerable<NbpResponse>>(responseContent);
+                    var responseObject = JsonConvert.DeserializeObject<NbpResponse>(responseContent);
                     return responseObject;
                 }
                 else if (response.StatusCode != HttpStatusCode.NotFound) //TODO: How to handle 404?

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using StartupHouse.Database.Entities;
 
 namespace StartupHouse.Database.Migrations.Migrations
 {
     [DbContext(typeof(ShDbContext))]
-    partial class ShDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200306143617_AddedDefaultValues")]
+    partial class AddedDefaultValues
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

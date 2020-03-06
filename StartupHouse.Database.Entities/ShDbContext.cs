@@ -27,6 +27,19 @@ namespace StartupHouse.Database.Entities
 
             modelBuilder.Entity<CurrencyPrice>()
                 .HasKey(cp => new { cp.CurrencyId, cp.Day });
-        }
+
+            modelBuilder.Entity<Currency>()
+                .HasData(
+                    new Currency()
+                    {
+                        Id = 1,
+                        Code = "EUR"
+                    },
+                    new Currency()
+                    {
+                        Id = 2,
+                        Code = "USD"
+                    });
+            }
     }
 }

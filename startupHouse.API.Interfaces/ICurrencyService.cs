@@ -10,7 +10,7 @@ namespace StartupHouse.API.Interfaces
     {
         IEnumerable<CurrencyDTO> GetAvailableCurrencies();
 
-        CurrencyDetailsDTO GetCurrencyDetails(string code, DateTime? dateFrom, DateTime? dateTo);
+        Task<CurrencyDetailsDTO> GetCurrencyDetails(string code, DateTime? dateFrom, DateTime? dateTo);
 
         Task UpdateCurrencies(DateTime date);
 

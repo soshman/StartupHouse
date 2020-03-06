@@ -1,13 +1,11 @@
 ﻿using AutoMapper;
 using StartupHouse.API.Interfaces;
 using StartupHouse.API.Interfaces.DTO;
-using StartupHouse.API.Interfaces.Models;
 using StartupHouse.Database.Entities.dbo;
 using StartupHouse.Database.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace StartupHouse.API.Services
@@ -40,19 +38,36 @@ namespace StartupHouse.API.Services
             return _mapper.Map<IEnumerable<CurrencyDTO>>(currencies);
         }
 
-        public CurrencyDetailsDTO GetCurrencyDetails(string code, DateTime? dateFrom, DateTime? dateTo)
+        public async Task<CurrencyDetailsDTO> GetCurrencyDetails(string code, DateTime? dateFrom, DateTime? dateTo)
         {
             dateFrom = dateFrom ?? DateTime.Today;
             dateTo = dateTo ?? DateTime.Today;
 
+            //TODO: Check if range not too wide and if date from not > date to.
+
             var currency = _currenciesRepository.Get(c => c.Code == code);
+            //TODO: If not found.
+
+            var currencyPricesDates = _currencyPricesRepository
+                .Query().Where(cp => cp.CurrencyId == currency.Id && cp.Day >= dateFrom && cp.Day <= dateTo).Select(cp => cp.Day).ToList();
+
+            for (int i = 0; i < dateTo.Value.Subtract(dateTo.Value).Days; i++)
+            {
+                var day = dateFrom.Value.AddDays(i);
+                var currencyDayPrice = currencyPricesDates.FirstOrDefault(cpd => cpd == day);
+
+                if (currencyDayPrice == null)
+                    await UpdateCurrencies(day);
+            }
+
+            var currencyPrices = _currencyPricesRepository
+                .Fetch(cp => cp.CurrencyId == currency.Id && cp.Day >= dateFrom && cp.Day <= dateTo);
 
             var currencyDetailsDTO = _mapper.Map<CurrencyDetailsDTO>(currency);
 
-            currencyDetailsDTO.Average = currency.Prices?
-                .Where(cp => cp.Day >= dateFrom && cp.Day <= dateTo)
+            currencyDetailsDTO.Average = currencyPrices
                 .Select(p => p.Price)
-                .Average() ?? 0M;
+                .Average();
 
             return currencyDetailsDTO;
         }

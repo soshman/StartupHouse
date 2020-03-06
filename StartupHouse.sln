@@ -3,23 +3,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29424.173
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StartupHouse.API", "StartupHouse\StartupHouse.API.csproj", "{5DDE93D4-A75F-4560-87D7-95CCCCC44FC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StartupHouse.API", "StartupHouse\StartupHouse.API.csproj", "{5DDE93D4-A75F-4560-87D7-95CCCCC44FC0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{1DACE37B-B14E-4FFB-9776-05CC1CF01CA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StartupHouse.API.Interfaces", "startupHouse.API.Interfaces\StartupHouse.API.Interfaces.csproj", "{0E2D51F1-BED2-4EEE-AC25-A395C71038A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StartupHouse.API.Interfaces", "startupHouse.API.Interfaces\StartupHouse.API.Interfaces.csproj", "{0E2D51F1-BED2-4EEE-AC25-A395C71038A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StartupHouse.API.Services", "StartupHouse.API.Services\StartupHouse.API.Services.csproj", "{F4D63D1D-6831-4497-88B4-6182E5DFA513}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StartupHouse.API.Services", "StartupHouse.API.Services\StartupHouse.API.Services.csproj", "{F4D63D1D-6831-4497-88B4-6182E5DFA513}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StartupHouse.Auth", "StartupHouse.Auth\StartupHouse.Auth.csproj", "{64748BB1-A426-449F-8866-20F8C4E5F0E8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StartupHouse.Auth", "StartupHouse.Auth\StartupHouse.Auth.csproj", "{64748BB1-A426-449F-8866-20F8C4E5F0E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StartupHouse.Database.Entities", "StartupHouse.Database.Entities\StartupHouse.Database.Entities.csproj", "{B161AD0E-DEE7-4541-A3CF-66FB7F1202AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StartupHouse.Database.Entities", "StartupHouse.Database.Entities\StartupHouse.Database.Entities.csproj", "{B161AD0E-DEE7-4541-A3CF-66FB7F1202AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StartupHouse.Database.Interfaces", "StartupHouse.Database.Interfaces\StartupHouse.Database.Interfaces.csproj", "{569CA7FE-4996-4DA8-8EE6-A6D462686693}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StartupHouse.Database.Interfaces", "StartupHouse.Database.Interfaces\StartupHouse.Database.Interfaces.csproj", "{569CA7FE-4996-4DA8-8EE6-A6D462686693}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StartupHouse.Database.Repository", "StartupHouse.Database.Repository\StartupHouse.Database.Repository.csproj", "{DE9E0F1F-22E3-468B-94FB-CA8253653910}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StartupHouse.Database.Repository", "StartupHouse.Database.Repository\StartupHouse.Database.Repository.csproj", "{DE9E0F1F-22E3-468B-94FB-CA8253653910}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StartupHouse.Database.Migrations", "StartupHouse.Database.Migrations\StartupHouse.Database.Migrations.csproj", "{45FECC11-DF0A-4E10-8852-64928E9223B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StartupHouse.Database.Migrations", "StartupHouse.Database.Migrations\StartupHouse.Database.Migrations.csproj", "{45FECC11-DF0A-4E10-8852-64928E9223B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StartupHouse.API.Services.Tests", "StartupHouse.API.Services.Tests\StartupHouse.API.Services.Tests.csproj", "{3E94A01F-2C16-41E6-8422-C984AFAFC236}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -59,6 +61,10 @@ Global
 		{45FECC11-DF0A-4E10-8852-64928E9223B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45FECC11-DF0A-4E10-8852-64928E9223B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45FECC11-DF0A-4E10-8852-64928E9223B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E94A01F-2C16-41E6-8422-C984AFAFC236}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E94A01F-2C16-41E6-8422-C984AFAFC236}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E94A01F-2C16-41E6-8422-C984AFAFC236}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E94A01F-2C16-41E6-8422-C984AFAFC236}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

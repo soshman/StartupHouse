@@ -8,5 +8,7 @@ namespace StartupHouse.API.Interfaces
     public interface ICurrencyService
     {
         IEnumerable<CurrencyDTO> GetAvailableCurrencies();
+
+        CurrencyDetailsDTO GetCurrencyDetails(string code);
     }
 }

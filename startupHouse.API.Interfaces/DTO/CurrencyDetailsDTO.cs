@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
-namespace StartupHouse.API.ApiModels
+namespace StartupHouse.API.Interfaces.DTO
 {
-    public class CurrencyDetailsApiModel
+    public class CurrencyDetailsDTO
     {
         /// <summary>
         ///     Currency Id.
@@ -30,6 +29,6 @@ namespace StartupHouse.API.ApiModels
         /// <summary>
         ///     Currency data from certain dates range.
         /// </summary>
-        public IEnumerable<CurrencyPriceApiModel> Prices { get; set; }
+        public IEnumerable<CurrencyPriceDTO> Prices { get; set; }
     }
 }

@@ -36,7 +36,9 @@ namespace StartupHouse.API.Controllers
         [HttpGet]
         public CurrencyDetailsApiModel GetCurrencyData(string code, DateTime? fromDate, DateTime? toDate)
         {
-            return null;
+            var currencyDetailsDto = _currencyService.GetCurrencyDetails(code);
+
+            return _mapper.Map<CurrencyDetailsApiModel>(currencyDetailsDto);
         }
     }
 }

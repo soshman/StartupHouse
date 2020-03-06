@@ -13,6 +13,7 @@ using StartupHouse.Database.Entities;
 using StartupHouse.Database.Entities.dbo;
 using StartupHouse.Database.Interfaces;
 using StartupHouse.Database.Repository;
+using System.Linq;
 
 namespace StartupHouse
 {
@@ -46,6 +47,10 @@ namespace StartupHouse
                 {
                     cfg.CreateMap<Currency, CurrencyDTO>();
                     cfg.CreateMap<CurrencyDTO, CurrencyApiModel>();
+                    cfg.CreateMap<Currency, CurrencyDetailsDTO>();
+                    cfg.CreateMap<CurrencyDetailsDTO, CurrencyDetailsApiModel>();
+                    cfg.CreateMap<CurrencyPrice, CurrencyPriceDTO>();
+                    cfg.CreateMap<CurrencyPriceDTO, CurrencyPriceApiModel>();
                 });
 
                 var mapper = config.CreateMapper();

@@ -5,6 +5,7 @@ using StartupHouse.Database.Entities.dbo;
 using StartupHouse.Database.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace StartupHouse.API.Services
@@ -27,6 +28,17 @@ namespace StartupHouse.API.Services
             var currencies = _currenciesRepository.Fetch();
 
             return _mapper.Map<IEnumerable<CurrencyDTO>>(currencies);
+        }
+
+        public CurrencyDetailsDTO GetCurrencyDetails(string code)
+        {
+            var currency = _currenciesRepository.Get(c => c.Code == code);
+
+            var currencyDetailsDTO = _mapper.Map<CurrencyDetailsDTO>(currency);
+
+            currencyDetailsDTO.Average = currency.Prices?.Select(p => p.Price).Average() ?? 0M;
+
+            return currencyDetailsDTO;
         }
     }
 }

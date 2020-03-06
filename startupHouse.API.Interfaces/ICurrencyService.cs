@@ -1,7 +1,6 @@
 ﻿using StartupHouse.API.Interfaces.DTO;
-using System;
+using StartupHouse.API.Interfaces.Models;
 using System.Collections.Generic;
-using System.Text;
 
 namespace StartupHouse.API.Interfaces
 {
@@ -10,5 +9,7 @@ namespace StartupHouse.API.Interfaces
         IEnumerable<CurrencyDTO> GetAvailableCurrencies();
 
         CurrencyDetailsDTO GetCurrencyDetails(string code);
+
+        void UpdateCurrencies(IEnumerable<NbpResponse> nbpResponse);
     }
 }

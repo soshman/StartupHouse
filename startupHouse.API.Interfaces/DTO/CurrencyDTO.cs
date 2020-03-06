@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace StartupHouse.API.Interfaces.DTO
+﻿namespace StartupHouse.API.Interfaces.DTO
 {
     public class CurrencyDTO
     {

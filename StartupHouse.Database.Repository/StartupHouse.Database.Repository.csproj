@@ -4,4 +4,9 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\StartupHouse.Database.Entities\StartupHouse.Database.Entities.csproj" />
+    <ProjectReference Include="..\StartupHouse.Database.Interfaces\StartupHouse.Database.Interfaces.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -94,16 +94,17 @@ namespace StartupHouse
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            app.UseMiddleware<ThrottlingMiddleware>();
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseMiddleware<ThrottlingMiddleware>();
+            app.UseMiddleware<HttpStatusExceptionMiddleware>();
+
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {
@@ -115,7 +116,6 @@ namespace StartupHouse
 
             RecurringJob.AddOrUpdate<ICurrencyService>(w => w.UpdateCurrencies(), Cron.Daily(12, 0), TimeZoneInfo.Local);
 
-            app.UseMiddleware<HttpStatusExceptionMiddleware>();
         }
     }
 }

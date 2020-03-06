@@ -7,22 +7,22 @@ namespace StartupHouse.API.Middleware
 {
     public class HttpStatusExceptionMiddleware
     {
-        private readonly RequestDelegate _request;
+        private readonly RequestDelegate _next;
 
-        public HttpStatusExceptionMiddleware(RequestDelegate request)
+        public HttpStatusExceptionMiddleware(RequestDelegate next)
         {
-            _request = request;
+            _next = next;
         }
 
         public async Task InvokeAsync(HttpContext httpContext)
         {
             try
             {
-                await _request(httpContext);
+                await _next(httpContext);
             }
-            catch (InvalidOperationException)
+            catch (InvalidOperationException ex)
             {
-                HandleInvalidOperationException(httpContext);
+                await HandleInvalidOperationException(httpContext, ex);
             }
             catch
             {
@@ -31,9 +31,10 @@ namespace StartupHouse.API.Middleware
             }
         }
 
-        private void HandleInvalidOperationException(HttpContext context)
+        private async Task HandleInvalidOperationException(HttpContext context, InvalidOperationException ex)
         {
             context.Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            await context.Response.WriteAsync(ex.Message);
         }
 
         private void HandleException(HttpContext context)

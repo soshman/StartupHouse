@@ -8,12 +8,12 @@ namespace StartupHouse.API.Middleware
 {
     public class ThrottlingMiddleware
     {
-        private readonly RequestDelegate _request;
+        private readonly RequestDelegate _next;
         private IMemoryCache _cache;
 
-        public ThrottlingMiddleware(RequestDelegate request, IMemoryCache memoryCache)
+        public ThrottlingMiddleware(RequestDelegate next, IMemoryCache memoryCache)
         {
-            _request = request;
+            _next = next;
             _cache = memoryCache;
         }
 
@@ -32,7 +32,7 @@ namespace StartupHouse.API.Middleware
             
             _cache.Set(ip, DateTime.Now.ToString(), options);
 
-            await _request(httpContext);
+            await _next(httpContext);
         }
     }
 }

@@ -51,6 +51,12 @@ namespace StartupHouse.API.Services
 
             //TODO: Check if range not too wide and if date from not > date to.
 
+            if ((dateTo - dateFrom) > TimeSpan.FromDays(15))
+                throw new InvalidOperationException("Too wide dates range");
+
+            if (dateTo < dateFrom)
+                throw new InvalidOperationException("DateTo must be later than DateFrom");
+
             var currency = _currenciesRepository.Get(c => c.Code == code);
             //TODO: If not found.
 

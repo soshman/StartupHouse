@@ -1,4 +1,5 @@
 using AutoMapper;
+using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +14,7 @@ using StartupHouse.Database.Entities;
 using StartupHouse.Database.Entities.dbo;
 using StartupHouse.Database.Interfaces;
 using StartupHouse.Database.Repository;
+using System;
 using System.Linq;
 
 namespace StartupHouse
@@ -56,6 +58,10 @@ namespace StartupHouse
                 var mapper = config.CreateMapper();
                 return mapper;
             });
+
+            services.AddHangfire(x => x.
+                UseSqlServerStorage(connectionString);
+            services.AddHangfireServer();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,6 +80,11 @@ namespace StartupHouse
             {
                 endpoints.MapControllers();
             });
+
+            app.UseHangfireDashboard();
+            app.UseHangfireServer();
+
+            RecurringJob.AddOrUpdate<INbpService>(w => w.UpdateCurrencies(DateTime.Today, DateTime.Today), Cron.Daily(1, 0), TimeZoneInfo.Local); //TODO: Add UpdateCurrencies with one parameter.
         }
     }
 }

@@ -17,10 +17,11 @@ namespace StartupHouse.API.Services
         private readonly HttpClient _client;
         private readonly ICurrencyService _currencyService;
 
-        public NbpService(HttpClient client)
+        public NbpService(HttpClient client,
+            ICurrencyService currencyService)
         {
             _client = client;
-
+            _currencyService = currencyService;
         }
 
         public async Task UpdateCurrencies(DateTime dateFrom, DateTime dateTo)

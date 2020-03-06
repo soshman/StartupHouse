@@ -40,13 +40,19 @@ namespace StartupHouse.API.Services
             return _mapper.Map<IEnumerable<CurrencyDTO>>(currencies);
         }
 
-        public CurrencyDetailsDTO GetCurrencyDetails(string code)
+        public CurrencyDetailsDTO GetCurrencyDetails(string code, DateTime? dateFrom, DateTime? dateTo)
         {
+            dateFrom = dateFrom ?? DateTime.Today;
+            dateTo = dateTo ?? DateTime.Today;
+
             var currency = _currenciesRepository.Get(c => c.Code == code);
 
             var currencyDetailsDTO = _mapper.Map<CurrencyDetailsDTO>(currency);
 
-            currencyDetailsDTO.Average = currency.Prices?.Select(p => p.Price).Average() ?? 0M;
+            currencyDetailsDTO.Average = currency.Prices?
+                .Where(cp => cp.Day >= dateFrom && cp.Day <= dateTo)
+                .Select(p => p.Price)
+                .Average() ?? 0M;
 
             return currencyDetailsDTO;
         }

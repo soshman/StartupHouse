@@ -1,8 +1,10 @@
+using AspNetCoreRateLimit;
 using AutoMapper;
 using Hangfire;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,6 +13,7 @@ using Microsoft.IdentityModel.Tokens;
 using StartupHouse.API.ApiModels;
 using StartupHouse.API.Interfaces;
 using StartupHouse.API.Interfaces.DTO;
+using StartupHouse.API.Middleware;
 using StartupHouse.API.Services;
 using StartupHouse.Database.Entities;
 using StartupHouse.Database.Entities.dbo;
@@ -32,7 +35,17 @@ namespace StartupHouse
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddOptions();
+            services.AddMemoryCache();
+            services.Configure<IpRateLimitOptions>(Configuration.GetSection("IpRateLimiting"));
+            services.Configure<IpRateLimitPolicies>(Configuration.GetSection("IpRateLimitPolicies"));
+            services.AddSingleton<IIpPolicyStore, MemoryCacheIpPolicyStore>();
+            services.AddSingleton<IRateLimitCounterStore, MemoryCacheRateLimitCounterStore>();
+            
             services.AddControllers();
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
 
             var connectionString = Configuration.GetSection("ConnectionString").Get<string>();
             services.AddDbContext<ShDbContext>(options => options
@@ -81,6 +94,8 @@ namespace StartupHouse
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseMiddleware<ThrottlingMiddleware>();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -99,6 +114,8 @@ namespace StartupHouse
             app.UseHangfireServer();
 
             RecurringJob.AddOrUpdate<ICurrencyService>(w => w.UpdateCurrencies(), Cron.Daily(12, 0), TimeZoneInfo.Local);
+
+            app.UseMiddleware<HttpStatusExceptionMiddleware>();
         }
     }
 }

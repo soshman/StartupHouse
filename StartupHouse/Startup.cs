@@ -42,6 +42,7 @@ namespace StartupHouse
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
             services.AddScoped<ICurrencyService, CurrencyService>();
+            services.AddHttpClient<INbpService, NbpService>();
 
             services.AddScoped(iServiceProvider =>
             {

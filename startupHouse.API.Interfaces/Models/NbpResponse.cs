@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace StartupHouse.API.Interfaces.Models
 {
@@ -8,6 +9,6 @@ namespace StartupHouse.API.Interfaces.Models
 
         public string Code { get; set; }
 
-        public NbpCurrencyRate[] Rates { get; set; }
+        public IEnumerable<NbpCurrencyRate> Rates { get; set; }
     }
 }

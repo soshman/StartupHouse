@@ -1,11 +1,13 @@
 using AutoMapper;
 using Hangfire;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using StartupHouse.API.ApiModels;
 using StartupHouse.API.Interfaces;
 using StartupHouse.API.Interfaces.DTO;
@@ -15,7 +17,6 @@ using StartupHouse.Database.Entities.dbo;
 using StartupHouse.Database.Interfaces;
 using StartupHouse.Database.Repository;
 using System;
-using System.Linq;
 
 namespace StartupHouse
 {
@@ -60,6 +61,18 @@ namespace StartupHouse
                 var mapper = config.CreateMapper();
                 return mapper;
             });
+
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
+                {
+                    options.Authority = Configuration.GetValue<string>("Authentication:Authority");
+                    options.RequireHttpsMetadata = false;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
 
             services.AddHangfire(x => x.
                 UseSqlServerStorage(connectionString));

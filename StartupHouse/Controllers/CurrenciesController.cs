@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StartupHouse.API.ApiModels;
 using StartupHouse.API.Interfaces;
@@ -11,6 +12,7 @@ namespace StartupHouse.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[Authorize]
     public class CurrenciesController : ControllerBase
     {
         private readonly IMapper _mapper;

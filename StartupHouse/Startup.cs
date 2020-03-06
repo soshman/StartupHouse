@@ -50,7 +50,8 @@ namespace StartupHouse
                 {
                     cfg.CreateMap<Currency, CurrencyDTO>();
                     cfg.CreateMap<CurrencyDTO, CurrencyApiModel>();
-                    cfg.CreateMap<Currency, CurrencyDetailsDTO>();
+                    cfg.CreateMap<Currency, CurrencyDetailsDTO>()
+                        .ForMember(c => c.Prices, options => options.Ignore());
                     cfg.CreateMap<CurrencyDetailsDTO, CurrencyDetailsApiModel>();
                     cfg.CreateMap<CurrencyPrice, CurrencyPriceDTO>();
                     cfg.CreateMap<CurrencyPriceDTO, CurrencyPriceApiModel>();

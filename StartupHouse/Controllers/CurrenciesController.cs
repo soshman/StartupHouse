@@ -34,9 +34,9 @@ namespace StartupHouse.API.Controllers
 
         [Route("{code}")]
         [HttpGet]
-        public CurrencyDetailsApiModel GetCurrencyData(string code, DateTime? fromDate, DateTime? toDate)
+        public async Task<CurrencyDetailsApiModel> GetCurrencyData(string code, DateTime? fromDate, DateTime? toDate)
         {
-            var currencyDetailsDto = _currencyService.GetCurrencyDetails(code, fromDate, toDate);
+            var currencyDetailsDto = await _currencyService.GetCurrencyDetails(code, fromDate, toDate);
 
             return _mapper.Map<CurrencyDetailsApiModel>(currencyDetailsDto);
         }

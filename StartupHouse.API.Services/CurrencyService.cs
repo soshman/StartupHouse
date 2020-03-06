@@ -43,31 +43,37 @@ namespace StartupHouse.API.Services
             dateFrom = dateFrom ?? DateTime.Today;
             dateTo = dateTo ?? DateTime.Today;
 
+            if (dateFrom > DateTime.Today)
+                dateFrom = DateTime.Today;
+
+            if (dateTo > DateTime.Today)
+                dateTo = DateTime.Today;
+
             //TODO: Check if range not too wide and if date from not > date to.
 
             var currency = _currenciesRepository.Get(c => c.Code == code);
             //TODO: If not found.
 
-            var currencyPricesDates = _currencyPricesRepository
-                .Query().Where(cp => cp.CurrencyId == currency.Id && cp.Day >= dateFrom && cp.Day <= dateTo).Select(cp => cp.Day).ToList();
+            var currencyPricesDates = _currencyPricesRepository.Query().Where(cp => cp.CurrencyId == currency.Id && cp.Day >= dateFrom && cp.Day <= dateTo).Select(cp => cp.Day).ToList();
 
-            for (int i = 0; i < dateTo.Value.Subtract(dateTo.Value).Days; i++)
+            for (int i = 0; i < dateTo.Value.Subtract(dateFrom.Value).Days; i++)
             {
                 var day = dateFrom.Value.AddDays(i);
                 var currencyDayPrice = currencyPricesDates.FirstOrDefault(cpd => cpd == day);
 
-                if (currencyDayPrice == null)
-                    await UpdateCurrencies(day);
+                if (currencyDayPrice == default)
+                    await UpdateCurrencies(day); //Could update only one currency.
             }
 
-            var currencyPrices = _currencyPricesRepository
-                .Fetch(cp => cp.CurrencyId == currency.Id && cp.Day >= dateFrom && cp.Day <= dateTo);
+            var currencyPrices = _currencyPricesRepository.Fetch(cp => cp.CurrencyId == currency.Id && cp.Day >= dateFrom && cp.Day <= dateTo);
 
             var currencyDetailsDTO = _mapper.Map<CurrencyDetailsDTO>(currency);
+            currencyDetailsDTO.Prices = _mapper.Map<IEnumerable<CurrencyPriceDTO>>(currencyPrices);
 
-            currencyDetailsDTO.Average = currencyPrices
-                .Select(p => p.Price)
-                .Average();
+            var prices = currencyPrices.Select(p => p.Price);
+
+            if (prices.Any())
+                currencyDetailsDTO.Average = prices.Average();
 
             return currencyDetailsDTO;
         }
@@ -80,6 +86,9 @@ namespace StartupHouse.API.Services
         public async Task UpdateCurrencies(DateTime dateFrom, DateTime dateTo)
         {
             var nbpResponse = await _nbpService.GetCurrencies(dateFrom, dateTo);
+
+            if (nbpResponse == null)
+                return;
 
             foreach (var day in nbpResponse)
             {
@@ -96,6 +105,9 @@ namespace StartupHouse.API.Services
                         };
                         _currenciesRepository.Add(currency);
                     }
+
+                    if (_currencyPricesRepository.Query().Any(cp => cp.CurrencyId == currency.Id && cp.Day == day.EffectiveDate))
+                        continue;
 
                     var currencyPrice = new CurrencyPrice
                     {

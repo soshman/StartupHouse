@@ -40,7 +40,10 @@ namespace StartupHouse.API.Services
                 {
                     throw new InvalidOperationException($"NBP Api returned http status: {response.StatusCode}.");
                 }
-                throw new InvalidOperationException($"NBP Api returned http status: {response.StatusCode}.");
+                else
+                {
+                    return null;
+                }
             }
             catch
             {

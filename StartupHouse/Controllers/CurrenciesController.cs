@@ -12,7 +12,7 @@ namespace StartupHouse.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class CurrenciesController : ControllerBase
     {
         private readonly IMapper _mapper;
